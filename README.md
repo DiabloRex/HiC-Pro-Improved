@@ -1,5 +1,7 @@
 
-# HiC-Pro
+# HiC-Pro-Improved
+### Current update:
+1. Added Compression to intermediate fastq files, reduce disk consumption! (Not Tested now!)
 
 ### An optimized and flexible pipeline for Hi-C data processing
 
