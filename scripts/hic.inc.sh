@@ -257,10 +257,10 @@ get_fastq_for_bowtie_global()
 	echo "$ifastq $ifq"
     fi
 }
-
+### revised by DiabloRex, changed to gziped file
 get_fastq_for_bowtie_local()
 {
-    get_hic_files $BOWTIE2_GLOBAL_OUTPUT_DIR _${REFERENCE_GENOME}.bwt2glob.unmap.fastq
+    get_hic_files $BOWTIE2_GLOBAL_OUTPUT_DIR _${REFERENCE_GENOME}.bwt2glob.unmap.fastq.gz
 }
 
 get_bam_for_pp()

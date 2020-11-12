@@ -48,7 +48,7 @@ mapbuilder: $(INST_SOURCES)/build_matrix.cpp
 	(g++ -Wall -O2 -std=c++0x -o build_matrix ${INST_SOURCES}/build_matrix.cpp; mv build_matrix ${INST_SCRIPTS})
 
 readstrimming: $(INST_SOURCES)/cutsite_trimming.cpp
-	(g++ -Wall -O2 -std=c++0x -o cutsite_trimming ${INST_SOURCES}/cutsite_trimming.cpp; mv cutsite_trimming ${INST_SCRIPTS})
+	(g++ -Wall -O2 -std=c++0x -o cutsite_trimming ${INST_SOURCES}/cutsite_trimming.cpp -lz; mv cutsite_trimming ${INST_SCRIPTS})
 
 ## Build Python lib
 iced: $(INST_SOURCES)/ice_mod

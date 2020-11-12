@@ -26,9 +26,9 @@ end_to_end_align()
     ## Output
     prefix=$(basename ${infile} | sed -e 's/.fastq\(.gz\)*$//' -e 's/.fq\(.gz\)*$//')
     
-    ## Unmapped reads
+    ## Unmapped reads ### revised by DiabloRex -- add compression to output files
     if [[ $unmap == 1 ]]; then
-	BOWTIE2_GLOBAL_OPTIONS=${BOWTIE2_GLOBAL_OPTIONS}" --un ${odir}/${prefix}_${REFERENCE_GENOME}.bwt2glob.unmap.fastq"
+	BOWTIE2_GLOBAL_OPTIONS=${BOWTIE2_GLOBAL_OPTIONS}" --un-gz ${odir}/${prefix}_${REFERENCE_GENOME}.bwt2glob.unmap.fastq.gz"
     fi
     
     ## Check for gz files
@@ -73,14 +73,14 @@ cut_and_align()
     prefix=$(basename ${infile} | sed -e 's/.fastq\(.gz\)*$//' -e 's/.fq\(.gz\)*$//')
 
     ## Starts trimming reads from the ligation site
-    tfile=`basename $infile | sed -e s/.fastq$/_trimmed.fastq/`
+    tfile=`basename $infile | sed -e s/.fastq$/_trimmed.fastq.gz/`
     ##cmd="${SCRIPTS}/cutsite_trimming --fastq $infile --cutsite ${LIGATION_SITE} --out ${odir}/$tfile --rmuntrim > ${ldir}/${prefix}_readsTrimming.log 2>&1"
     cmd="${SCRIPTS}/cutsite_trimming --fastq $infile --cutsite ${LIGATION_SITE} --out ${odir}/$tfile  > ${ldir}/${prefix}_readsTrimming.log 2>&1"
     exec_cmd "$cmd" 
     
-    ## Unmapped reads
+    ## Unmapped reads ### revised by DiabloRex -- add compression to output files
     if [[ $unmap == 1 ]]; then
-	BOWTIE2_LOCAL_OPTIONS=${BOWTIE2_LOCAL_OPTIONS}" --un ${odir}/${prefix}_${REFERENCE_GENOME}.bwt2glob.unmap.fastq"
+	BOWTIE2_LOCAL_OPTIONS=${BOWTIE2_LOCAL_OPTIONS}" --un-gz ${odir}/${prefix}_${REFERENCE_GENOME}.bwt2glob.unmap.fastq.gz"
     fi
 
     if [[ $N_CPU -lt 2 ]]; then

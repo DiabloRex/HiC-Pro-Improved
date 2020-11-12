@@ -13,12 +13,14 @@
 #include <string.h>
 #include <vector>
 #include <fstream>
+#include "gzstream.C"
+
 
 static const char* prog;
 
 static int usage(int ret=1)
 {
-  std::cerr << "usage: " << prog << " --fastq FASTQFILE --cutsite CUTSITE --out OUTFILE [--rmuntrim] \n";
+  std::cerr << "usage: " << prog << " --fastq gziped_FASTQFILE --cutsite CUTSITE --out OUTFILE [--rmuntrim] \n";
   std::cerr << "usage: " << prog << " --help\n";
   return ret;
 }
@@ -26,8 +28,8 @@ static int usage(int ret=1)
 /*
 Get options from command line
 */
-static int get_options(int argc, char* argv[], std::string& fastqFile,
-                       std::vector<std::string>& cutSites, std::string& output, bool& rmuntrim)
+static int get_options(int argc, char* argv[], int& fastqFile,
+                       std::vector<std::string>& cutSites, int& output, bool& rmuntrim)
 {
   prog = argv[0];
   if (argc == 1){
@@ -37,7 +39,8 @@ static int get_options(int argc, char* argv[], std::string& fastqFile,
     const char* opt = argv[ac];
     if (*opt == '-') {
       if (!strcmp(opt, "--fastq")) {
-        fastqFile = std::string(argv[++ac]);
+        int ff = ++ac;
+        fastqFile = ff;
       } else if (!strcmp(opt, "--cutsite")) {
 
         std::string cutSitesSequence;
@@ -53,7 +56,8 @@ static int get_options(int argc, char* argv[], std::string& fastqFile,
 
       } 
       else if (!strcmp(opt, "--out")) {
-        output = std::string(argv[++ac]);
+        int op = ++ac;
+        output = op;
       }
       else if (!strcmp(opt, "--rmuntrim")) {
         rmuntrim = true;
@@ -96,17 +100,18 @@ static std::vector<std::string> check_cutSites(std::vector<std::string>& cutSite
 }
 
 
-static int trim_fastq(std::string& fastqFile,
+static int trim_fastq(char* fastqFile,
                       std::vector<std::string>& cutSites,
-                      std::string& outFile, bool& rmuntrim)
+                      char* outFile, bool& rmuntrim)
 {
 
   int trim_count=0;
   std::string ID;
-  std::ifstream ifs (fastqFile);
-  std::ofstream ofs (outFile);
+  igzstream ifs;
+  ifs.open(fastqFile);
+  ogzstream ofs(outFile);
 
-  if (ifs.is_open()){
+  if (ifs.good()){
     // foreach reads
     while (getline(ifs, ID)) {
       std::string seq;
@@ -160,26 +165,27 @@ static int trim_fastq(std::string& fastqFile,
 
 int main(int argc, char* argv[])
 {
-  
-  std::string fastqFile;
+  char* fastqFile;
   std::vector<std::string> cutSites;
-  std::string outFile;
+  char* outFile;
   bool rmuntrim = false;
-
-  int ret = get_options(argc, argv, fastqFile, cutSites, outFile, rmuntrim);
-  if (fastqFile.empty() || cutSites.size() == 0 || outFile.empty()){
+  int fq=0;
+  int op=0;
+  std::cout<<"Getting options"<<std::endl;
+  int ret = get_options(argc, argv, fq, cutSites, op, rmuntrim);
+  fastqFile = argv[fq];
+  outFile = argv[op];
+  printf("##Fastq file: %s\n", argv[fq]);
+  if ( std::string(fastqFile).empty() || cutSites.size() == 0 ||  std::string(outFile).empty()){
     usage();
     exit(ret);
   }
-
-  printf("##Fastq file: %s\n", fastqFile.c_str());
-
   cutSites = check_cutSites(cutSites);
   printf("##Restriction sites (n=%d):\n", (int)cutSites.size());
   for(std::vector<std::string>::iterator it = cutSites.begin(); it != cutSites.end(); ++it){
     std::cout << *it << std::endl;
   }
-  printf("##Output File: %s\n", outFile.c_str());
+  printf("##Output File: %s\n", argv[op]);
 
   int trim_count=trim_fastq(fastqFile, cutSites, outFile, rmuntrim);
   printf("\n##Trimmed reads: %d\n", trim_count);
