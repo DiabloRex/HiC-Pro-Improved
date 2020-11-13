@@ -1,7 +1,8 @@
 
 # HiC-Pro-Improved
 ### Current update (by DiabloRex):
-1. Added Compression to intermediate fastq files, reduce disk consumption! (Not Tested now!)
+1. Added Compression to intermediate fastq files, reduce disk consumption! (Installation tested! Not Tested for running now!)
+2. Parallel reads pairing process
 
 ### An optimized and flexible pipeline for Hi-C data processing
 

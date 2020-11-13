@@ -89,6 +89,7 @@ do
     ldir=${LOGS_DIR}/${sample_dir}
     mkdir -p ${ldir}
     echo "Logs: ${ldir}/mergeSAM.log"
+    ## changed by DiabloRex for parallel pairing process
     merge_pairs $sample_dir $R1 $R2 &> ${ldir}/mergeSAM.log && echo "Completed for "${sample_dir} &
 done
 
