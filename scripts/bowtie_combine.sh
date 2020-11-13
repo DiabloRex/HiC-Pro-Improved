@@ -56,6 +56,10 @@ mapping_combine()
     
 	cmd="mv ${BOWTIE2_FINAL_OUTPUT_DIR}/${prefix}.bwt2merged.sorted.bam ${BOWTIE2_FINAL_OUTPUT_DIR}/${prefix}.bwt2merged.bam"
         exec_cmd $cmd 2>&1
+
+    ## index sam ## added by DiabloRex
+    cmd="{SAMTOOLS_PATH}/samtools index -@ ${N_CPU} ${BOWTIE2_FINAL_OUTPUT_DIR}/${prefix}.bwt2merged.bam"
+        exec_cmd $cmd 2>&1
     
     elif [[ ${LIGATTION_SITE} == "" ]]; then
 	
