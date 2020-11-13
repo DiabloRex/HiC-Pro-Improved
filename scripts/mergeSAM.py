@@ -323,4 +323,5 @@ if __name__ == "__main__":
     hr1.close()
     hr2.close()
     outfile.close()
+    print "Completed Pairing for: [" + R1file + "].[" + R2file + "]"
 

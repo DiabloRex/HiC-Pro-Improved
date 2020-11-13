@@ -89,8 +89,10 @@ do
     ldir=${LOGS_DIR}/${sample_dir}
     mkdir -p ${ldir}
     echo "Logs: ${ldir}/mergeSAM.log"
-    merge_pairs $sample_dir $R1 $R2 &> ${ldir}/mergeSAM.log
+    merge_pairs $sample_dir $R1 $R2 &> ${ldir}/mergeSAM.log && echo "Completed for "${sample_dir} &
 done
+
+wait
 
 ## Add allele specific tag if specified
 if [[ ${ALLELE_SPECIFIC_SNP} != "" ]]; then
