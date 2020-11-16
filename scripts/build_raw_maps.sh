@@ -72,6 +72,15 @@ do
 	MATRIX_DIR=${MAPC_OUTPUT}/matrix/${RES_FILE_NAME}/raw
 	for bsize in ${BIN_SIZE}
 	do
+		### get initial joblist number -> for work control, by DiabloRex
+		### add & to parallel run, make sure you have enough RAM, add options (N_BUILD_MATRIX) for parallel, by DiabloRex
+		### restrict number of working raw map builder
+		joblist=($(ps aux | grep build_matrix | wc -l))
+		while [ $joblist -gt $N_BUILD_MATRIX ];do
+                sleep 1
+                joblist=($(ps aux | grep build_matrix | wc -l))
+        done
+
 	    if [[ ${bsize} == -1 ]]; then
 		GENOME_FRAGMENT_FILE=`abspath $GENOME_FRAGMENT`
 		if [[ $GENOME_FRAGMENT == "" || ! -f $GENOME_FRAGMENT_FILE ]]; then
@@ -102,9 +111,16 @@ do
 	    do
 		ofile=$(basename ${r} | sed -e 's/.allValidPairs/_${bsize}/')
 		cmd="cat ${r} | ${SCRIPTS}/build_matrix --matrix-format ${MATRIX_FORMAT} ${bsize_opts} --chrsizes $GENOME_SIZE_FILE --ifile /dev/stdin --oprefix ${MATRIX_DIR}/${bsize}/${ofile}"
-		exec_cmd $cmd >> ${ldir}/build_raw_maps.log 2>&1
+		
+		exec_cmd $cmd >> ${ldir}/build_raw_maps.log 2>&1 &
+		sleep 1
 	    done
 	done
     fi
-    wait
 done
+
+### added for indication, by DiabloRex
+wait
+date
+echo "Building matrix completed!"
+echo "------------------------------------------"

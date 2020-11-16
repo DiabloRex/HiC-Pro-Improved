@@ -17,6 +17,8 @@ N_CPU = 2
 SORT_RAM = 768M
 LOGFILE = hicpro.log
 
+N_BUILD_MATRIX = 5
+
 JOB_NAME = 
 JOB_MEM = 
 JOB_WALLTIME = 
