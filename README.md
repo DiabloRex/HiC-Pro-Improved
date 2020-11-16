@@ -3,7 +3,7 @@
 ### Current update (by DiabloRex):
 1. Added Compression to intermediate fastq files, reduce disk consumption! (Installation tested! Not Tested for running now!)
 2. Parallel reads pairing process
-3. Parallel map building and ice normalization. No of working instance is controled by N_BUILD_MATRIX in config file.
+3. Parallel map building and ice normalization. Number of working instance is controled by N_BUILD_MATRIX in config file.
 
 ### An optimized and flexible pipeline for Hi-C data processing
 
