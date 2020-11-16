@@ -73,9 +73,9 @@ do
 		### restrict number of working raw map builder
 		joblist=($(ps aux | grep iced.matrix | wc -l))
 		while [ $joblist -gt $N_BUILD_MATRIX ];do
-                sleep 1
-                joblist=($(ps aux | grep iced.matrix | wc -l))
-        done
+                	sleep 1
+                	joblist=($(ps aux | grep iced.matrix | wc -l))
+        	done
 
 	    if [[ $bsize == -1 ]]; then
 		bsize="rfbin"
