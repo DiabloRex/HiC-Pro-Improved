@@ -77,9 +77,9 @@ do
 		### restrict number of working raw map builder
 		joblist=($(ps aux | grep build_matrix | wc -l))
 		while [ $joblist -gt $N_BUILD_MATRIX ];do
-                sleep 1
-                joblist=($(ps aux | grep build_matrix | wc -l))
-        done
+                	sleep 1
+                	joblist=($(ps aux | grep build_matrix | wc -l))
+        	done
 
 	    if [[ ${bsize} == -1 ]]; then
 		GENOME_FRAGMENT_FILE=`abspath $GENOME_FRAGMENT`
