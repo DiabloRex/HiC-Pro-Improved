@@ -51,11 +51,14 @@ mapping_combine()
 	exec_cmd $cmd 2>&1
 
         ## Sort merge file. In theory, should be perform by "merge -n", but do not work in some cases ... depending on read name ?
+        ## Check on merging and sorting results to continue, especially for sorting, failed on this step multiple times due to not enough memory, by DiabloRex
 	cmd="${SAMTOOLS_PATH}/samtools sort -@ ${N_CPU} -m ${SORT_RAM} -n -T ${TMP_DIR}/$tmp_prefix -o ${BOWTIE2_FINAL_OUTPUT_DIR}/${prefix}.bwt2merged.sorted.bam ${BOWTIE2_FINAL_OUTPUT_DIR}/${prefix}.bwt2merged.bam"
-        exec_cmd $cmd 2>&1
+        status=$?
+        [ $status -eq 0 ] && exec_cmd $cmd 2>&1 || die "${cmd} failed" 
     
 	cmd="mv ${BOWTIE2_FINAL_OUTPUT_DIR}/${prefix}.bwt2merged.sorted.bam ${BOWTIE2_FINAL_OUTPUT_DIR}/${prefix}.bwt2merged.bam"
-        exec_cmd $cmd 2>&1
+        status=$?
+        [ $status -eq 0 ] && exec_cmd $cmd 2>&1 || die "${cmd} failed"
     
     elif [[ ${LIGATTION_SITE} == "" ]]; then
 	
