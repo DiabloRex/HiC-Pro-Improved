@@ -77,5 +77,9 @@ do
     exec_cmd $cmd >> ${logfile} 2>&1
 done
 
+wait
+
+echo "All completed!"
+echo "-----------------------------------"
 
 
